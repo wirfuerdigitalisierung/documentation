@@ -416,3 +416,7 @@ Bu4=
       in: header
       name: 'API-KEY'
       description: 'Api-Key needed to authenticate requests'
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
