@@ -75,7 +75,7 @@ paths:
       tags:
         - Upload tracing data
       security:
-        - BearerAuth: [ ]
+        - ApiKeyAuth: [ ]
       operationId: uploadTracingData
       summary: Uploads the tracing
       parameters:
