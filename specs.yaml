@@ -368,6 +368,39 @@ Bu4=
         - TRANSFERED
         - CLOSED
       readOnly: true
+
+    ContactData:
+      description: Persönliche Informationen des Gasts. Dieses Objekt muss mit dem öffentlichen Schlüssel der anfragenden Behörde verschlüsselt werden.
+      properties:
+        f:
+          type: string
+          description: 'Vorname'
+          example: 'Stefan'
+        g:
+          type: string
+          description: 'Familienname'
+          example: 'Michalk'
+        p:
+          type: string
+          description: 'Telefonnummer'
+          example: '01234 67901526'
+        e:
+          type: string
+          description: 'E-Mail'
+          example: 'stefan@darfichrein.de'
+        a:
+          type: string
+          description: 'Vollständige Anschrift. Straße & Hausnummer#Postleitzahl#Ort.'
+          example: 'Türkenstraße 7#80333#München'
+        c:
+          type: string
+          description: 'ggf. Kontext des Aufenthalts'
+          example: 'Raum 0815'
+        m:
+          type: string
+          description: 'Kommentar, falls notwendig'
+          example: 'Check-out wurde berechnet'
+
           
   securitySchemes:
     ApiKeyAuth:
