@@ -265,6 +265,7 @@ components:
       required:
         - code
         - caseId
+        - provider
         - companyId
         - issuer
         - from
