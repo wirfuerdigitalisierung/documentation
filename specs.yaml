@@ -18,17 +18,17 @@ tags:
     description: Uploads the visit information for location of specific period
 
 paths:
-  /companies/{id}:
+  /companies/{search}:
     get:
       tags:
         - Search for location
       security:
         - ApiKeyAuth: [ ]
       operationId: findCompanyByStartingValue
-      summary: Lookup for company by name starting with keyword
+      summary: Lookup for company by name starting with search
       parameters:
         - in: path
-          name: id
+          name: search
           schema:
             type: string
             minimum: 4
