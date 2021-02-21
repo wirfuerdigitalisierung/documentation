@@ -239,12 +239,12 @@ components:
           type: string
           format: date-time
           description: 'Zeitpunkt des Eintritts im ISO-Format'
-          example: '2021-02-20 21:15:53'
+          example: '2021-02-21T20:00:00.000Z'
         timestampExit:
           type: string
           format: date-time
           description: 'Zeitpunkt des Austritts im ISO-Format *mehr dazu im Implementierungsleitfaden'
-          example: '2021-02-20 22:12:13'
+          example: '2021-02-21T22:00:00.000Z'
 
     TracingTicketRequest:
       description: 'All information needed to create a new TracingTicket'
@@ -301,12 +301,12 @@ components:
           type: string
           format: date-time
           description: 'Zeitpunkt, ab wann Daten angefordert werden'
-          example: '2021-02-20 21:00:00'
+          example: '2021-02-21T20:00:00.000Z'
         to:
           type: string
           format: date-time
           description: 'Zeitpunkt, bis wann Daten angefordert werden'
-          example: '2021-02-21 06:00:00'
+          example: '2021-02-21T22:00:00.000Z'
         message:
           type: string
           description: 'Nachricht der Behörde an die Destination *mehr im Implementierungsleitfaden'
