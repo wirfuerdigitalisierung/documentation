@@ -1,0 +1,377 @@
+openapi: 3.0.0
+info:
+  title: wirfuerdigitalisierung
+  description: Gesundheitsbehörden digital (tm)
+  version: 0.0.01
+security:
+  - ApiKeyAuth: [ ]
+
+tags: 
+  - name: Search for location
+    description: Example API
+  - name: Create new Tracing case
+    description: Creates a new tracing case and calls the providers API to inform
+  - name: Upload tracing data
+    description: Uploads the visit information for location of specific period
+
+paths:
+  /companies/{id}:
+    get:
+      tags:
+        - Search for location
+      security:
+        - ApiKeyAuth: [ ]
+      operationId: findCompanyByStartingValue
+      summary: Lookup for company by name starting with keyword
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            minimum: 4
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationInformation'
+          description: Companies matching the keyword
+  
+  /tracing-cases/{caseId}/tickets:
+    post:
+      tags:
+        - Create new Tracing case
+      security:
+        - BearerAuth: [ ]
+      operationId: createNewTicketForTracingCase
+      summary: Creates a new TracingTicket
+      parameters:
+        - in: path
+          name: caseId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracingTicketRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TracingTicketResponse'
+          description: TracingTicket created
+  
+  /tracing-cases/{caseId}/tickets/{ticketId}/upload:
+    post:
+      tags:
+        - Upload tracing data
+      security:
+        - BearerAuth: [ ]
+      operationId: uploadTracingData
+      summary: Uploads the tracing
+      parameters:
+        - in: path
+          name: caseId
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationVisitUpload'
+      responses:
+        '200':
+          description: 'Upload was successful'
+
+
+components:
+  schemas:
+    LocationInformation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'Interne ID (beim Provider)'
+          example: '5eddd61036d39a0ff8b11fdb'
+        name:
+          type: string
+          description: 'Name des Standorts'
+          example: 'Restaurant Alberts'
+        publicKey:
+          type: string
+          description: 'Öffentlicher Schlüssel, ggf. für Nachrichtenaustausch'
+        contact:
+          $ref: '#/components/schemas/LocationContact'
+          description: 'Kontaktperson des Standorts'
+        contexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationContext'
+
+    LocationContact:
+      type: object
+      properties:
+        officialName:
+          type: string
+          description: 'Offizieller Unternehmensname'
+          example: 'Darfichrein GmbH'
+        representative:
+          type: string
+          description: 'Ansprechpartner für dieses Unternehmen'
+          example: 'Stefan Michalk'
+        address:
+          $ref: '#/components/schemas/LocationAddress'
+          description: 'Anschrift des Standorts'
+        ownerEmail:
+          type: string
+          description: 'E-Mail des Inhabers'
+          example: 'stefan@darfichrein.de'
+        email:
+          type: string
+          description: 'ggf. E-Mail einer weiteren Kontaktperson'
+          example: 'covid@darfichrein.de'
+        phone:
+          type: string
+          description: 'Telefonnummer eines Ansprechpartners'
+          example: 'die bleibt privat :-)'
+
+    LocationContext:
+      type: object
+      description: 'Ein Standort hat ggf. weitere Informationen wie Tische/Räume, etc.'
+      properties:
+        id:
+          type: string
+          description: 'Interne ID des Kontext'
+          example: '5f4bfff742c1bf5f72918851'
+        name:
+          type: string
+          description: 'Bezeichnung'
+          example: 'Raum 0815'
+    
+    LocationAddress:
+      required:
+        - street
+        - city
+        - zip
+      properties:
+        street:
+          type: string
+          description: 'street + number'
+          example: 'Türkenstr. 7'
+        city:
+          type: string
+          description: 'Stadt'
+          example: 'München'
+        zip:
+          type: string
+          description: 'Postleitzahl'
+          example: '80333'
+
+    LocationVisitUpload:
+      description: 'Angeforderte Kontaktdaten inkl. Informationen der Destination'
+      type:
+        object
+      properties:
+        visits:
+          description: 'Liste der Kontaktdaten des angeforderten Zeitraums'
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationVisit'
+        caseId:
+          type: string
+          description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
+          example: '602bb183931cfb3b604398f8'
+        ticketId:
+          type: string
+          description: 'Ticket-ID innerhalb "Gesundheitsbehörde digital"'
+          example: '602bb27c3541b01b8b9436ac'
+        tracingSource:
+          description: 'Referenz zur Destination'
+          $ref: '#/components/schemas/Location'
+    
+    Location:
+      type: object
+      description: 'Dieses Objekt wird separat abgelegt, um die Referenz zu den Kontaktdaten zu halten'
+      properties:
+        name:
+          type: string
+          description: 'Name der Destination'
+          example: 'Restaurant Alberts'
+        officialName:
+          type: string
+          description: 'Offizieller Unternehmensname'
+          example: 'Darfichrein GmbH'
+        provider:
+          type: string
+          description: 'Name des Kontaktdatenproviders'
+          example: 'darfichrein'
+        address:
+          $ref: '#/components/schemas/LocationAddress'
+    
+    LocationVisit:
+      type:
+        object
+      properties:
+        data:
+          type: string
+          description: 'Verschlüsselte Kontaktdaten *mehr dazu im Implementierungsleitfaden'
+          example: 'YOUCANNOTREADTHISBASE64ENCODEDENCRYPEDDATA'
+        context:
+          type: string
+          description: 'Kontext des Besuchers, z. B. bestimmter Tisch/Raum'
+          example: 'Raum 0815'
+        timestampEntrance:
+          type: string
+          format: date-time
+          description: 'Zeitpunkt des Eintritts im ISO-Format'
+          example: '2021-02-20 21:15:53'
+        timestampExit:
+          type: string
+          format: date-time
+          description: 'Zeitpunkt des Austritts im ISO-Format *mehr dazu im Implementierungsleitfaden'
+          example: '2021-02-20 22:12:13'
+
+    TracingTicketRequest:
+      description: 'All information needed to create a new TracingTicket'
+      allOf:
+        - $ref: '#/components/schemas/TracingTicket'
+
+    TracingTicketResponse:
+      description: 'TracingTicket with ID and Status'
+      allOf:
+        - $ref: '#/components/schemas/TracingTicket'
+      properties:
+        id:
+          type: string
+          description: 'ID innerhalb "Gesundheitsbehörde digital"'
+          example: '602bb27c3541b01b8b9436ac'
+        status:
+          $ref: "#/components/schemas/TracingStatus"
+
+    TracingTicket:
+      type: object
+      required:
+        - code
+        - caseId
+        - companyId
+        - issuer
+        - from
+        - to
+      properties:
+        code:
+          type: string
+          description: 'Identifizierendes Merkmal/Referenz bei Rückfragen (via Telefon/E-Mail)'
+          example: 'a57b-e17b-9460'
+        caseId:
+          type: string
+          description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
+          example: '602bb183931cfb3b604398f8'
+        companyId:
+          type: string
+          description: "ID der Destination innerhalb des Providers"
+          example: '5f4bfff742c1bf5f72918851'
+        context:
+          type: string          
+          description: "Kontext, falls eingegrenzt werden soll"
+          example: 'Raum 0815'
+        issuer:
+          description: 'Ausstellende Gesundheitsbehörde'        
+          $ref: '#/components/schemas/TracingIssuer'
+        from:
+          type: string
+          format: date-time
+          description: 'Zeitpunkt, ab wann Daten angefordert werden'
+          example: '2021-02-20 21:00:00'
+        to:
+          type: string
+          format: date-time
+          description: 'Zeitpunkt, bis wann Daten angefordert werden'
+          example: '2021-02-21 06:00:00'
+        message:
+          type: string
+          description: 'Nachricht der Behörde an die Destination *mehr im Implementierungsleitfaden'
+          example: 'Bitte rufen Sie uns an.'
+
+    TracingIssuer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Anfragende Gesundheitsbehörde'
+          example: 'Gesundheitsbehörde Darfichrein GmbH'
+        certificate:
+          type: string
+          description: 'Zertifikat der Gesundheitsbehörde *mehr im Implementierungsleitfaden'
+          example: '-----BEGIN CERTIFICATE-----
+MIIFPjCCAyagAwIBAgIUOlPemeKSf9Jbl5LCTEuK/5ovoywwDQYJKoZIhvcNAQEL
+BQAwgc8xCzAJBgNVBAYTAkRFMQ8wDQYDVQQIDAZCYXllcm4xETAPBgNVBAcMCE3D
+vG5jaGVuMRkwFwYDVQQKDBBEYXJmaWNocmVpbiBHbWJIMR4wHAYDVQQLDBVaZXJ0
+aWZpemllcnVuZ3NzdGVsbGUxFDASBgNVBAMMC2RhcmZpY2hyZWluMQ4wDAYDVQQR
+DAU4MDMzMzEZMBcGA1UECQwQVMO8cmtlbnN0cmHDn2UgNzEgMB4GCSqGSIb3DQEJ
+ARYRaGlAZGFyZmljaHJlaW4uZGUwHhcNMjEwMTMxMTExNzMzWhcNMzEwMTI5MTEx
+NzMzWjCBqzEqMCgGA1UEAwwhYmFkIGFpYmxpbmcuaGVhbHRoLmRhcmZpY2hyZWlu
+LmRlMQswCQYDVQQGEwJERTEUMBIGA1UEBwwLQmFkIEFpYmxpbmcxGjAYBgNVBAoM
+EVN0YWR0IERhcmZpY2hyZWluMRwwGgYDVQQLDBNHZXN1bmRoZWl0c2JlaMO2cmRl
+MSAwHgYJKoZIhvcNAQkBFhFoaUBkYXJmaWNocmVpbi5kZTCCASIwDQYJKoZIhvcN
+AQEBBQADggEPADCCAQoCggEBAK8YktDPMy91tmDyKCsC/qJbrpRTlQ1TFSeiux6p
+HiPRNXYRzEHj6aWfpcNZkHNWy7yJT8CxD0Gp81KmzFz/cXtwibTTzkIONZXbfxwV
+DuRNd1TAoBfDuTNh2WpuR6HFlKQyoJAvy7m2XgtcVDPOULKA7L7/5IdUUrNVyZzb
+H0xtFLAvW5Ipy11JX7b+0M5BtGbo8ahewBl65VZzIXATxdGWo5TPqsC6p67CpZZu
+FV9uBhHrFCIyLHSWYMpzyzqRIJyuD09Bjh7Y6OFTX/fCeZjO9RqUgcYJDQNSiO4b
+xOQ/lru1NUK9/R8D9S6yTWJ3gIbX8aq3rfdn8MTKbXuU2+sCAwEAAaM0MDIwMAYD
+VR0RBCkwJ4IOZGFyZmljaHJlaW4uZGWCFWhlYWx0aC5kYXJmaWNocmVpbi5kZTAN
+BgkqhkiG9w0BAQsFAAOCAgEAdoVNFokIX9uG3vhDXoOzzFXqjnSz89+ld/bToxo/
+uQXF2791oROyNGBltiTgIDbkCX1TbEffuuGYZ0sbWUoh+LkmCICA1bDFDuzWH4Qd
+MbZCr+V5gb0vHzR3w94gRytv1rfZzEN5w3CcCk73YBrzZjcFx5KfFO81TCLmHJIx
+NB936JiijC5I8f0ksNSZOe+IAy0b+2lg94BFPuznnrHXwHIcna8zbmSJ+DqE6IeC
+a5eeG0UjIf5BBPkT2dYiZKb80G9h2BcyBMbjbOTvsyOsdpw/2rgn08RfQY3Yr53s
+128P1PI8VvQdZNmYDSwFd+4egFLzIOzMFHv1IWMRAwEV+PzwzdvJTrZubjSFtohm
+h+WWPAdBzFS3kYUSaUcWoaOaspxvLEEc5aoFiCEMuWcBepXQBHPWl734zXd9MJlD
+Z/hqO8PX/176+Z5Hi3mbyuafmTUPFgk4nE0LJbnpipfbCagpEJpMIJXVV6gAJP9l
+NKgMhPcrM6P5ZP3HgUXnCxrzgaht+L9pgIyrkx/WbK4prlrpGQ5sxU9GbS7XyPNI
+TMiORKYqTHRtTXevXQDippbMqWY38d96cFwcpIih50VT+1k235MDn4soWvdLu2a3
+bya01G9Zgp+ywKqSF+jhIC3JEKzg3trK6ldLzuF6ya1RQN0k/1HGpAeIi6y6N7LM
+Bu4=
+-----END CERTIFICATE-----
+'
+        fingerprint:
+          type: string
+          description: 'Fingerabdruck des Zertifikats *mehr im Implementierungsleitfaden'
+          example: 'dc3f230b761752b6f07c98f70251b9ca1b27b24528966f61497dff69ec5715aa'
+        publicKey:
+          type: string
+          description: 'Öffentlicher Schlüssel der Gesundheitsbehörde *mehr im Implementierungsleitfaden'
+          example: 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NB'
+    
+    TracingStatus:
+      description: 'Aktueller Status des Tickets'      
+      type: string
+      enum:
+        - DRAFT
+        - REQUESTED
+        - REQUEST_SEEN
+        - CANCELLED
+        - READY
+        - DOWNLOADED
+        - TRANSFERED
+        - CLOSED
+      readOnly: true
+          
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: 'API-KEY'
+      description: 'Api-Key needed to authenticate requests'
