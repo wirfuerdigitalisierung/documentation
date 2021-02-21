@@ -278,6 +278,10 @@ components:
           type: string
           description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
           example: '602bb183931cfb3b604398f8'
+        provider:
+          type: string
+          description: 'Name des Providers'
+          example: 'darfichrein'
         companyId:
           type: string
           description: "ID der Destination innerhalb des Providers"
