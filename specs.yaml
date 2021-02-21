@@ -6,6 +6,9 @@ info:
 security:
   - ApiKeyAuth: [ ]
 
+servers:
+  - url: https://api.darfichrein.de
+
 tags: 
   - name: Search for location
     description: Example API
