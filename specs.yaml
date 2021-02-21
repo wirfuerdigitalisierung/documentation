@@ -195,11 +195,11 @@ components:
         caseId:
           type: string
           description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
-          example: '602bb183931cfb3b604398f8'
+          example: '602bb183931cfb3b604398f9'
         ticketId:
           type: string
           description: 'Ticket-ID innerhalb "Gesundheitsbehörde digital"'
-          example: '602bb27c3541b01b8b9436ac'
+          example: '60327fe6b07ab12701e9f8e4'
         tracingSource:
           description: 'Referenz zur Destination'
           $ref: '#/components/schemas/Location'
@@ -259,7 +259,11 @@ components:
         id:
           type: string
           description: 'ID innerhalb "Gesundheitsbehörde digital"'
-          example: '602bb27c3541b01b8b9436ac'
+          example: '60327fe6b07ab12701e9f8e4'
+        provider:
+          type: string
+          description: 'Name des Providers'
+          example: 'darfichrein'
         status:
           $ref: "#/components/schemas/TracingStatus"
 
@@ -281,11 +285,7 @@ components:
         caseId:
           type: string
           description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
-          example: '602bb183931cfb3b604398f8'
-        provider:
-          type: string
-          description: 'Name des Providers'
-          example: 'darfichrein'
+          example: '602bb183931cfb3b604398f9'
         companyId:
           type: string
           description: "ID der Destination innerhalb des Providers"
