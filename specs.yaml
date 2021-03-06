@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: wirfuerdigitalisierung
+  title: Adapter: Corona-Apps zu Gesundheitsbehörden 
   description: Gesundheitsbehörden digital (tm)
   version: 0.0.01
 security:
