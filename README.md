@@ -1,3 +1,2 @@
 # wirfuerdigitalisierung
 
-> shut up, Luca.
