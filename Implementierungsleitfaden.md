@@ -1,6 +1,8 @@
 # Implementierungsleitfaden
 
-> # Work in Progress
+> # Work in Progress 
+> Definitionen sind noch in Bewegung. Wenn Sie jetzt implementieren, müssen Sie möglicherweise in naher Zukunft Dinge ändern. 
+  
 
 Implementierungsleitfaden zur sicheren Übertragung von Kontaktnachverfolgungsdaten externer Dienstleister in die Infrastruktur der Darfichrein GmbH. 
 
