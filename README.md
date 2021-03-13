@@ -16,7 +16,7 @@ Das folgenden Schaubild ist eine High-Level Darstellung des Zusammenspiels von �
 
 ![Dazu werden vor Ort Kontaktdaten Erfassungs Apps](wfd.jpg)
 
-Die Anforderungen an eine Integration aus Sicht des Providers befindet sich im [Implementierungsleitfaden für Provider](Implementierungsleitfaden.md)
+Die Anforderungen an eine Integration aus Sicht des Providers befindet sich im [Implementierungsleitfaden für Provider](Implementierungsleitfaden.md). 
 
 ## Codex
 

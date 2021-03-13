@@ -38,7 +38,11 @@ Die Behörde als solche kann die Datensätze nun mit dem privaten Schlüssel ent
 
 Da diese Anfrage nur innerhalb der Anwendung der Gesundheitsbehörden stattfindet, werden keine Request bekannt werden.
 Wir bitten dennoch, einen HTTP-Header (z. B. x-wfd-api-key) für einen API-Key für alle HTTP-Anfragen zu implementieren. Der API-Key wird vom Portal generiert, den Providern zur Verfügung gestellt und sollte nur Zugriff auf die nachfolgenden Ressourcen gewähren.
-Die Spezifikation liegt im OpenAPI-Format unter https://github.com/darfichrein-de/wfd-ga-digital vor.
+
+
+Die Spezifikation liegt im OpenAPI-Format unter https://github.com/wirfuerdigitalisierung/documentation/blob/main/specs.yaml vor. 
+
+Für eine bessere Darstellung könnt ihr die spec in https://editor.swagger.io/ importieren. 
 
 ## Schaubild
 
@@ -59,7 +63,7 @@ Als Mitarbeiter des Gesundheitsamtes möchte bei Eingabe von mindestens 4 Zeiche
 
 ### Definition der HTTP-Response
 
-Die Definition der erwarteten Response ist dem OpenAPI-Dokument im Repository zu entnehmen.
+Die Definition der erwarteten Response ist dem [OpenAPI-Dokument im Repository zu entnehmen](https://github.com/wirfuerdigitalisierung/documentation/blob/0815402ae2189cad167be7b7e129ec49c389032a/specs.yaml#L27).
 
 ## Ressource: Kontaktdaten Anfrage
 
@@ -70,7 +74,7 @@ Die Kontaktdaten Anfrage wird seitens „Gesundheitsbehörde digital“-Portal a
 Als Mitarbeiter des Gesundheitsamtes möchte ich eine Anfrage zur Kontaktdaten Anforderung an den vorher festgelegten Standort senden können. Dieser muss die Informationen wie Zeitraum und ggf. Kontext der Kontaktdaten Anfrage annehmen und entsprechend verarbeiten. Dabei ist es elementar, die Daten entsprechend des Zeitraums einzuschränken. Als Sicherheitskriterium möchte ich, dass das Zertifikat meines Gesundheitsamtes mitgesendet wird, um die Anfrage zu verifizieren.
 ### Definition des HTTP-Requests
 
-Die Definition des Request ist dem OpenAPI-Dokument im Repository zu entnehmen.
+Die Definition des Request ist dem [OpenAPI-Dokument im Repository zu entnehmen](https://github.com/wirfuerdigitalisierung/documentation/blob/0815402ae2189cad167be7b7e129ec49c389032a/specs.yaml#L66).
 
 ## Ressourcen: Kontaktdaten Download
 
@@ -83,8 +87,9 @@ Dabei ist mir wichtig, dass alle Provider die Struktur der persönlichen Daten h
 
 ### Definition der HTTP-Requests
 
-Die Definition der Bereitstellung der Download URL ist dem OpenAPI-Dokument im Repository zu entnehmen.
-Die Definition des Download Requests  ist dem OpenAPI-Dokument im Repository zu entnehmen.
+Die Definition der Bereitstellung der Download URL ist dem [OpenAPI-Dokument im Repository zu entnehmen](https://github.com/wirfuerdigitalisierung/documentation/blob/0815402ae2189cad167be7b7e129ec49c389032a/specs.yaml#L98).
+
+Die Definition des Download Requests  ist dem [OpenAPI-Dokument im Repository zu entnehmen](https://github.com/wirfuerdigitalisierung/documentation/blob/0815402ae2189cad167be7b7e129ec49c389032a/specs.yaml#L130).
 
 ## Format: Kontaktdaten
 
