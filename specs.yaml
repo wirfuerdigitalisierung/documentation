@@ -1,39 +1,56 @@
 openapi: 3.0.0
-info:
-  title: Adapter - Corona-Apps zu Gesundheitsbehörden 
-  description: Gesundheitsbehörden digital (tm)
-  version: 0.0.01
-security:
-  - ApiKeyAuth: [ ]
 
+info:
+  title: Adapter - Kontaktdaten Erfassungs Apps (Provider) zu Gesundheitsbehörden 
+  description: Gesundheitsbehörden digital (tm)
+  version: 0.0.1
+security:
+  - ApiKeyAuth: []
+      
 servers:
   - url: https://api.darfichrein.de
+    description: Production URL
+  - url: https://dev-api.darfichrein.de
+    description: Staging URL
 
 tags: 
   - name: Search for location
-    description: Example API
-  - name: Create new Tracing case
-    description: Creates a new tracing case and calls the providers API to inform
-  - name: Upload tracing data
-    description: Uploads the visit information for location of specific period
+    description: Standortsuche
+  - name: Request contact data
+    description: Kontaktdaten Anfrage
+  - name: Provide download url
+    description: Bereitstellung Download URL
+  - name: Download tracing data
+    description: Kontaktdaten Download
 
 paths:
-  /companies/{search}:
+  /{search_location_endpoint}/{search}:
     get:
       tags:
         - Search for location
       security:
         - ApiKeyAuth: [ ]
       operationId: findCompanyByStartingValue
-      summary: Lookup for company by name starting with search
+      summary: Lookup for company or locations matching search param.      
+      description: Dieser Endpunkt wird vom Provider implementiert. Den finalen Pfad kann der Provider bestimmen.
       parameters:
         - in: path
+          description: URL encoded String
           name: search
           schema:
             type: string
             minimum: 4
           required: true
+        - in: path
+          description: Endpoint wie vom Provider konfiguriert
+          name: search_location_endpoint
+          schema:
+            type: string
+          required: true
+
       responses:
+        '500':
+          description: Error at Provider
         '200':
           content:
             application/json:
@@ -41,19 +58,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationInformation'
-          description: Companies matching the keyword
+          description: Companies matching the keyword. In case there are no results an empty array is returned. 
+        '401':
+          description: Unauthorized - API Key not set or invalid
+
   
-  /tracing-cases/{caseId}/tickets:
+  /{request_contact_data_endpoint}:
     post:
+      description: Dieser Endpunkt wird vom Provider implementiert. Den finalen Pfad kann der Provider bestimmen.
       tags:
-        - Create new Tracing case
+        - Request contact data
       security:
-        - BearerAuth: [ ]
+        - ApiKeyAuth: [ ]
       operationId: createNewTicketForTracingCase
       summary: Creates a new TracingTicket
       parameters:
         - in: path
-          name: caseId
+          name: request_contact_data_endpoint
+          description: Endpoint wie vom Provider konfiguriert
           schema:
             type: string
           required: true
@@ -63,21 +85,25 @@ paths:
             schema:
               $ref: '#/components/schemas/TracingTicketRequest'
       responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TracingTicketResponse'
-          description: TracingTicket created
+        '400':
+          description: Fehler in der Anfrage vom Portal
+        '500':
+          description: Fehler im Provider        
+        '202':
+          description: Request accepted
+        '401':
+          description: Unauthorized - API Key not set or invalid
+
   
-  /tracing-cases/{caseId}/tickets/{ticketId}/upload:
-    post:
+  /tracing-cases/{caseId}/tickets/{ticketId}/download:
+    put:
+      description: Dieser Endpunkt wird vom Portal implementiert. Die caseId und ticketId findet man in der Kontaktdaten Anfrage.
       tags:
-        - Upload tracing data
+        - Provide download url
       security:
         - ApiKeyAuth: [ ]
       operationId: uploadTracingData
-      summary: Uploads the tracing
+      summary: Provides Download URL
       parameters:
         - in: path
           name: caseId
@@ -93,16 +119,55 @@ paths:
         content:
           application/json:
             schema:
+              $ref: '#/components/schemas/DownloadURL'
+      responses:
+        '201':
+          description: 'Upload was successful'
+        '401':
+          description: Unauthorized - API Key not set or invalid
+
+
+  /{download_url}:
+    get:
+      description: Dieser Endpunkt wird vom Provider implementiert. Der finalen Pfad (download_url) bestimmt der Provider beim Upload der download_url .
+      tags:
+        - Download tracing data
+      parameters:
+        - in: path
+          name: download_url
+          description: Wird vom Provider bereitgestellt in "Provide Download URL"
+          schema:
+            type: string
+          required: true
+ 
+      security:
+        - ApiKeyAuth: [ ]
+      operationId: uploadTracingData
+      summary: Downlods contact data
+      requestBody:
+        content:
+          application/json:
+            schema:
               $ref: '#/components/schemas/LocationVisitUpload'
       responses:
+        '401':
+          description: Unauthorized - API Key not set or invalid
+        '404':
+          description: resource not found
         '200':
-          description: 'Upload was successful'
-
+          description: 'Download successful'
+        '500':
+          description: Fehler beim Provider
+            
 
 components:
   schemas:
     LocationInformation:
       type: object
+      required:
+        - "id"
+        - "name"
+        - "contact"
       properties:
         id:
           type: string
@@ -125,6 +190,8 @@ components:
 
     LocationContact:
       type: object
+      required:
+        - "address"
       properties:
         officialName:
           type: string
@@ -184,6 +251,8 @@ components:
 
     LocationVisitUpload:
       description: 'Angeforderte Kontaktdaten inkl. Informationen der Destination'
+      required:
+        - "visits"        
       type:
         object
       properties:
@@ -192,18 +261,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LocationVisit'
-        caseId:
-          type: string
-          description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
-          example: '602bb183931cfb3b604398f9'
-        ticketId:
-          type: string
-          description: 'Ticket-ID innerhalb "Gesundheitsbehörde digital"'
-          example: '60327fe6b07ab12701e9f8e4'
         tracingSource:
           description: 'Referenz zur Destination'
           $ref: '#/components/schemas/Location'
-    
+
+    DownloadURL:
+
+      description: 'URL unter der das Portal die Kontaktdaten runterladen kann.'
+      type:
+        object
+      required:
+        - "download_url"
+      properties:
+        download_url:
+          type: string
+
     Location:
       type: object
       description: 'Dieses Objekt wird separat abgelegt, um die Referenz zu den Kontaktdaten zu halten'
@@ -224,6 +296,10 @@ components:
           $ref: '#/components/schemas/LocationAddress'
     
     LocationVisit:
+      required:
+        - "data"
+        - "timestampEntrance"
+        - "timestampExit"
       type:
         object
       properties:
@@ -270,47 +346,44 @@ components:
     TracingTicket:
       type: object
       required:
-        - code
+        - ticketId
         - caseId
+        - code      
         - provider
         - companyId
         - issuer
         - from
         - to
       properties:
-        code:
+        ticketId:
           type: string
-          description: 'Identifizierendes Merkmal/Referenz bei Rückfragen (via Telefon/E-Mail)'
-          example: 'a57b-e17b-9460'
+          description: 'Ticket-ID innerhalb "Gesundheitsbehörde digital"'
+          example: '602bb183931cfb3b604398f9'
         caseId:
           type: string
           description: 'Fall-ID innerhalb "Gesundheitsbehörde digital"'
           example: '602bb183931cfb3b604398f9'
+        code:
+          type: string
+          description: 'Identifizierendes Merkmal/Referenz bei Rückfragen (via Telefon/E-Mail)'
+          example: 'a57b-e17b-9460'
         companyId:
           type: string
           description: "ID der Destination innerhalb des Providers"
           example: '5f4bfff742c1bf5f72918851'
-        context:
-          type: string          
-          description: "Kontext, falls eingegrenzt werden soll"
-          example: 'Raum 0815'
         issuer:
           description: 'Ausstellende Gesundheitsbehörde'        
           $ref: '#/components/schemas/TracingIssuer'
         from:
           type: string
           format: date-time
-          description: 'Zeitpunkt, ab wann Daten angefordert werden'
+          description: 'Zeitpunkt, ab wann Daten angefordert werden (UTC)'
           example: '2021-02-21T20:00:00.000Z'
         to:
           type: string
           format: date-time
-          description: 'Zeitpunkt, bis wann Daten angefordert werden'
+          description: 'Zeitpunkt, bis wann Daten angefordert werden (UTC)'
           example: '2021-02-21T22:00:00.000Z'
-        message:
-          type: string
-          description: 'Nachricht der Behörde an die Destination *mehr im Implementierungsleitfaden'
-          example: 'Bitte rufen Sie uns an.'
 
     TracingIssuer:
       type: object
@@ -414,9 +487,5 @@ Bu4=
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: 'API-KEY'
-      description: 'Api-Key needed to authenticate requests'
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+      name: 'x-wfd-api-key'
+      description: 'Api-Key needed to authenticate the communication to Providers'
