@@ -39,7 +39,7 @@ Die Behörde als solche kann die Datensätze nun mit dem privaten Schlüssel ent
 ## Grundsätzliches
 
 Da diese Anfrage nur innerhalb der Anwendung der Gesundheitsbehörden stattfindet, werden keine Request bekannt werden.
-Wir bitten dennoch, einen HTTP-Header (z. B. x-wfd-api-key) für einen API-Key für alle HTTP-Anfragen zu implementieren. Der API-Key wird vom Portal generiert, den Providern zur Verfügung gestellt und sollte nur Zugriff auf die nachfolgenden Ressourcen gewähren.
+Wir bitten dennoch, einen HTTP-Header (x-wfd-api-key) für einen API-Key für alle HTTP-Anfragen zu implementieren. Der API-Key wird vom Portal generiert, den Providern zur Verfügung gestellt und sollte nur Zugriff auf die nachfolgenden Ressourcen gewähren.
 
 
 Die Spezifikation liegt im OpenAPI-Format unter https://github.com/wirfuerdigitalisierung/documentation/blob/main/specs.yaml vor. 
