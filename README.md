@@ -10,6 +10,10 @@ Das *„Gesundheitsbehörde digital“-Portal* ist eine zentrale Lösung für de
 
 Dabei werden Portal selbst keine Daten gespeichert. Die Kontaktdaten werden von den Providern in einem enheitlichen Format zum Download bereitgestellt. 
 
+## Ihr seid eine App und wollt mitmachen?
+
+> Cool! Wir sind grad dabei den Onboarding Prozess zu finalisieren.  Bitte habt noch etwas Geduld :) Wir empfehlen euch schon mal den [Implementierungsleitfaden für Provider](Implementierungsleitfaden.md) anzuschauen.
+
 ## High Level Schaubild
 
 Das folgenden Schaubild ist eine High-Level Darstellung des Zusammenspiels von „Gesundheitsbehörde digital“-Portal und Providern. 
