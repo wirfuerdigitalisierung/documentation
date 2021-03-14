@@ -4,11 +4,11 @@ Eine Initative von [Wir für Digitalisierung](https://www.wirfuerdigitalisierung
 
 ## About
 
-Ein zentrales Element bei der Bekämpfung der Corona Pandemie ist das sog. "Contact Tracing". Dabei werden in öffentlich Zugänglichen Räumen (Restaurants, Frisöre, Läden) Kontaktdaten erhoben. Dabei kommen vor Ort Kontaktdaten Erfassungs Apps [unterschiedlichster Anbieter](https://www.wirfuerdigitalisierung.de/ber-uns) zum Einsatz. 
+Ein zentrales Mittel bei der Bekämpfung der Corona Pandemie ist das sog. "Contact Tracing". Dabei werden in öffentlich zugänglichen Räumen (z.B. Restaurant, Friseur, Supermarkt) Kontaktdaten erhoben. Als digitale Alternative zur Papierliste, kommen dafür vor Ort Kontaktdaten-Erfassung Apps [unterschiedlichster Anbieter](https://www.wirfuerdigitalisierung.de/ber-uns) zum Einsatz. 
 
-Das *„Gesundheitsbehörde digital“-Portal* ist eine zentrale Lösung für den Austausch von Ende-zu-Ende-verschlüsselten Kontaktdaten zwischen Gesundheitsbehörden und unterschiedlichster in Deutschland verfügbarer Kontaktdaten Erfassungs Apps (Providern). 
+Das *„Gesundheitsbehörde digital“-Portal* ist eine zentrale Lösung für den Austausch von Ende-zu-Ende verschlüsselten Kontaktdaten zwischen Gesundheitsbehörden und den Kontaktdaten-Erfassung Apps (Providern). 
 
-Dabei werden Portal selbst keine Daten gespeichert. Die Kontaktdaten werden von den Providern in einem enheitlichen Format zum Download bereitgestellt. 
+Das Portal selbst speichert keine Kontaktdaten. Die Kontaktdaten werden von den Providern in einem einheitlichen Format zum Download bereitgestellt und können von einem autorisierten Mitarbeiter der zuständigen Gesundheitsbehörde eingesehen und exportiert werden. 
 
 ## Ihr seid eine App und wollt mitmachen?
 

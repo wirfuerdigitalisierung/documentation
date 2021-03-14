@@ -11,8 +11,8 @@ Implementierungsleitfaden zur sicheren Übertragung von Kontaktnachverfolgungsda
 | Begriff                             | Erklärung                                                                                                                                                                   |
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | „Gesundheitsbehörde digital“-Portal | Die zentrale Plattform für den sicheren Austausch zwischen  Providern  und Gesundheitsbehörden.   Bereitstellung erfolgt im Rahmen der Initiative “Wir für Digitalisierung” |
-| Provider                            | Kontaktdaten Erfassungs App  z.B. Darf Ich Rein, Recover, E-Guest, Luca                                                                                                     |
-| Destination                         | Ort an dem Kontaktdaten erhoben werden.   z.B. Restaurants, Supermarkt, Friseure                                                                                            |
+| Provider                            | Kontaktdaten-Erfassung App  z.B. Darf Ich Rein, Recover, E-Guest, Luca ([vollständige Liste](https://www.wirfuerdigitalisierung.de/ber-uns))                                                                                                     |
+| Destination                         | Ort an dem Kontaktdaten erhoben werden.   z.B. Restaurant, Supermarkt, Friseur                                                                                            |
 | Kontaktdaten                        | Personenbezogene Daten einer Person die sich in einer Destination zu einem bestimmten Zeitpunkt aufgehalten hat.                                                            |
 | Exportformate                       | z.B. SORMAS, Dikoma, Mikado                                                                                                                                                 |
  
