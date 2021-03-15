@@ -96,7 +96,9 @@ Die Definition des Download Requests  ist dem [OpenAPI-Dokument im Repository zu
 ## Format: Kontaktdaten
 
 Damit alle Provider schnell integriert werden können, ist es wichtig, sich auf eine einheitliche Struktur der Daten zu einigen.
-Die Struktur selbst in den Spezifikationen definiert.
+
+Die Definition des Formates is dem [OpenAPI-Dokument im Repository zu entnehmen](https://github.com/wirfuerdigitalisierung/documentation/blob/8c4bf89ce9e40497ef7d5cb5ddee08ae74955f2f/specs.yaml#L453).
+
 Die Schlüssel sind bewusst auf ein Zeichen reduziert, um mehr Platz für Daten zu lassen.
 
 CAVE
