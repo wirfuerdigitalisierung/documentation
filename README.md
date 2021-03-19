@@ -16,6 +16,9 @@ Das Portal selbst speichert keine Kontaktdaten. Die Kontaktdaten werden von den 
 
 ## High Level Schaubild
 
+> ## Work in progress
+> Es sind grad viele Dinge in Bewegung. Es wird bald ein Update hierzu geben. 
+
 Das folgenden Schaubild ist eine High-Level Darstellung des Zusammenspiels von „Gesundheitsbehörde digital“-Portal und Providern. 
 
 ![Dazu werden vor Ort Kontaktdaten Erfassungs Apps](wfd.jpg)
